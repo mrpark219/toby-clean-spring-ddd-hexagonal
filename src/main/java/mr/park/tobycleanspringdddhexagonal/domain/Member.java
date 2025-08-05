@@ -1,7 +1,15 @@
 package mr.park.tobycleanspringdddhexagonal.domain;
 
-import static mr.park.tobycleanspringdddhexagonal.domain.MemberStatus.PENDING;
+import lombok.Getter;
+import lombok.ToString;
 
+import java.util.Objects;
+
+import static mr.park.tobycleanspringdddhexagonal.domain.MemberStatus.*;
+import static org.springframework.util.Assert.state;
+
+@Getter
+@ToString
 public class Member {
     private String email;
 
@@ -12,25 +20,22 @@ public class Member {
     private MemberStatus status;
 
     public Member(String email, String nickname, String passwordHash) {
-        this.email = email;
-        this.nickname = nickname;
-        this.passwordHash = passwordHash;
+        this.email = Objects.requireNonNull(email);
+        this.nickname = Objects.requireNonNull(nickname);
+        this.passwordHash = Objects.requireNonNull(passwordHash);
+
         this.status = PENDING;
     }
 
-    public String getEmail() {
-        return email;
+    public void active() {
+        state(status == PENDING, "PENDING 상태가 아닙니다.");
+
+        this.status = ACTIVE;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
+    public void deactivate() {
+        state(status == ACTIVE, "ACTIVE 상태가 아닙니다.");
 
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public MemberStatus getStatus() {
-        return status;
+        this.status = DEACTIVATED;
     }
 }
