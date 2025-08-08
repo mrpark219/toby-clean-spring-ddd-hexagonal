@@ -43,8 +43,7 @@ class MemberTest {
     void activeFail() {
         member.active();
 
-        assertThatThrownBy(member::active)
-                .isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(member::active).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
@@ -58,14 +57,12 @@ class MemberTest {
 
     @Test
     void deactivateFail() {
-        assertThatThrownBy(member::deactivate)
-                .isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(member::deactivate).isInstanceOf(IllegalStateException.class);
 
         member.active();
         member.deactivate();
 
-        assertThatThrownBy(member::deactivate)
-                .isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(member::deactivate).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
@@ -101,5 +98,14 @@ class MemberTest {
         member.deactivate();
 
         assertThat(member.isActive()).isFalse();
+    }
+
+    @Test
+    void invalidEmail() {
+        assertThatThrownBy(() ->
+                Member.create(new MemberCreateRequest("invalid Email", "mrpark219", "secret"), passwordEncoder)
+        ).isInstanceOf(IllegalArgumentException.class);
+
+        Member.create(new MemberCreateRequest("mrpark219@gmail.com", "mrpark219", "secret"), passwordEncoder);
     }
 }
