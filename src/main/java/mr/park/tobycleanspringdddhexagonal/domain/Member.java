@@ -1,25 +1,35 @@
 package mr.park.tobycleanspringdddhexagonal.domain;
 
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.util.Objects.requireNonNull;
+import static lombok.AccessLevel.PROTECTED;
 import static mr.park.tobycleanspringdddhexagonal.domain.MemberStatus.*;
 import static org.springframework.util.Assert.state;
 
+@Entity
 @Getter
 @ToString
+@NoArgsConstructor(access = PROTECTED)
 public class Member {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
+
+    @Embedded
     private Email email;
 
     private String nickname;
 
     private String passwordHash;
 
+    @Enumerated(STRING)
     private MemberStatus status;
-
-    private Member() {
-    }
 
     public static Member register(MemberRegisterRequest createRequest, PasswordEncoder passwordEncoder) {
         var member = new Member();

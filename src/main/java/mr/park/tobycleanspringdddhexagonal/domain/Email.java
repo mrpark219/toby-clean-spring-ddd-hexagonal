@@ -1,9 +1,12 @@
 package mr.park.tobycleanspringdddhexagonal.domain;
 
+import jakarta.persistence.Embeddable;
+
 import java.util.regex.Pattern;
 
 import static java.util.regex.Pattern.compile;
 
+@Embeddable
 public record Email(String address) {
     private static final Pattern EMAIL_PATTERN = compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
 
