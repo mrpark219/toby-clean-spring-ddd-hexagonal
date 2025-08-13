@@ -1,4 +1,4 @@
-package mr.park.tobycleanspringdddhexagonal.application.provided;
+package mr.park.tobycleanspringdddhexagonal;
 
 import mr.park.tobycleanspringdddhexagonal.application.required.EmailSender;
 import mr.park.tobycleanspringdddhexagonal.domain.PasswordEncoder;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import static mr.park.tobycleanspringdddhexagonal.domain.MemberFixture.createPasswordEncoder;
 
 @TestConfiguration
-class MemberTestConfiguration {
+public class SplearnTestConfiguration {
     @Bean
     public EmailSender emailSender() {
         return (email, subject, body) -> System.out.println("Sending email: " + email);

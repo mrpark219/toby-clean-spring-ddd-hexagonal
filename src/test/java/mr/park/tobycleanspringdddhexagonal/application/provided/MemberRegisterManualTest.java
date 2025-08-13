@@ -10,6 +10,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static mr.park.tobycleanspringdddhexagonal.domain.MemberFixture.createMemberRegisterRequest;
 import static mr.park.tobycleanspringdddhexagonal.domain.MemberFixture.createPasswordEncoder;
@@ -20,7 +21,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-class MemberRegisterTest {
+class MemberRegisterManualTest {
 
     @Test
     void registerTestStub() {
@@ -71,6 +72,11 @@ class MemberRegisterTest {
         public Member save(Member member) {
             ReflectionTestUtils.setField(member, "id", 1L);
             return member;
+        }
+
+        @Override
+        public Optional<Member> findByEmail(Email email) {
+            return Optional.empty();
         }
     }
 
