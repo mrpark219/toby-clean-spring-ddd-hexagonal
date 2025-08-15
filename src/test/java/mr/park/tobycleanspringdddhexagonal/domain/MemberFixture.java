@@ -2,7 +2,7 @@ package mr.park.tobycleanspringdddhexagonal.domain;
 
 public class MemberFixture {
     public static MemberRegisterRequest createMemberRegisterRequest(String email) {
-        return new MemberRegisterRequest(email, "mrpark219", "secret");
+        return new MemberRegisterRequest(email, "mrpark219", "longSecret");
     }
 
     public static MemberRegisterRequest createMemberRegisterRequest() {

@@ -1,9 +1,11 @@
 package mr.park.tobycleanspringdddhexagonal.application.provided;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolationException;
 import mr.park.tobycleanspringdddhexagonal.SplearnTestConfiguration;
 import mr.park.tobycleanspringdddhexagonal.domain.DuplicateEmailException;
 import mr.park.tobycleanspringdddhexagonal.domain.Member;
+import mr.park.tobycleanspringdddhexagonal.domain.MemberRegisterRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -36,5 +38,17 @@ public record MemberRegisterTest(MemberRegister memberRegister) {
 
         assertThatThrownBy(() -> memberRegister.register(createMemberRegisterRequest()))
                 .isInstanceOf(DuplicateEmailException.class);
+    }
+
+    @Test
+    void memberRegisterRequestFail() {
+        extracted(new MemberRegisterRequest("mrpark219@gmail.com", "park", "longSecret"));
+        extracted(new MemberRegisterRequest("mrpark219@gmail.com", "mrpark219_______________________", "longSecret"));
+        extracted(new MemberRegisterRequest("mrpark219", "mrpark219", "longSecret"));
+    }
+
+    private void extracted(MemberRegisterRequest invalid) {
+        assertThatThrownBy(() -> memberRegister.register(invalid))
+                .isInstanceOf(ConstraintViolationException.class);
     }
 }
