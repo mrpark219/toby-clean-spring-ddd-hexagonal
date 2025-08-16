@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: toby-clean-spring-ddd-hexagonal
+  jpa:
+    show-sql: true

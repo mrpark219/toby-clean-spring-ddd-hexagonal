@@ -1,6 +1,7 @@
 package mr.park.tobycleanspringdddhexagonal.application;
 
 import lombok.RequiredArgsConstructor;
+import mr.park.tobycleanspringdddhexagonal.application.provided.MemberFinder;
 import mr.park.tobycleanspringdddhexagonal.application.provided.MemberRegister;
 import mr.park.tobycleanspringdddhexagonal.application.required.EmailSender;
 import mr.park.tobycleanspringdddhexagonal.application.required.MemberRepository;
@@ -13,7 +14,8 @@ import org.springframework.validation.annotation.Validated;
 @Transactional
 @Validated
 @RequiredArgsConstructor
-public class MemberService implements MemberRegister {
+public class MemberModifyService implements MemberRegister {
+    private final MemberFinder memberFinder;
     private final MemberRepository memberRepository;
     private final EmailSender emailSender;
     private final PasswordEncoder passwordEncoder;
@@ -29,6 +31,15 @@ public class MemberService implements MemberRegister {
         sendWelcomeEmail(member);
 
         return member;
+    }
+
+    @Override
+    public Member activate(Long memberId) {
+        Member member = memberFinder.find(memberId);
+
+        member.active();
+
+        return memberRepository.save(member);
     }
 
     private void sendWelcomeEmail(Member member) {
