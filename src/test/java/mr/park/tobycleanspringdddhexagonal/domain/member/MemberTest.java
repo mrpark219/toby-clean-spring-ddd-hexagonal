@@ -1,11 +1,11 @@
-package mr.park.tobycleanspringdddhexagonal.domain;
+package mr.park.tobycleanspringdddhexagonal.domain.member;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static mr.park.tobycleanspringdddhexagonal.domain.MemberFixture.createMemberRegisterRequest;
-import static mr.park.tobycleanspringdddhexagonal.domain.MemberFixture.createPasswordEncoder;
-import static mr.park.tobycleanspringdddhexagonal.domain.MemberStatus.*;
+import static mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture.createMemberRegisterRequest;
+import static mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture.createPasswordEncoder;
+import static mr.park.tobycleanspringdddhexagonal.domain.member.MemberStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -22,13 +22,17 @@ class MemberTest {
     @Test
     void registerMember() {
         assertThat(member.getStatus()).isEqualTo(PENDING);
+        assertThat(member.getDetail().getRegisteredAt()).isNotNull();
     }
 
     @Test
     void activate() {
+        assertThat(member.getDetail().getActivatedAt()).isNull();
+
         member.active();
 
         assertThat(member.getStatus()).isEqualTo(ACTIVE);
+        assertThat(member.getDetail().getActivatedAt()).isNotNull();
     }
 
     @Test
@@ -45,6 +49,7 @@ class MemberTest {
         member.deactivate();
 
         assertThat(member.getStatus()).isEqualTo(DEACTIVATED);
+        assertThat(member.getDetail().getDeactivatedAt()).isNotNull();
     }
 
     @Test
@@ -99,5 +104,17 @@ class MemberTest {
         ).isInstanceOf(IllegalArgumentException.class);
 
         Member.register(createMemberRegisterRequest(), passwordEncoder);
+    }
+
+    @Test
+    void updateInfo() {
+        member.active();
+
+        var request = new MemberInfoUpdateRequest("park219", "park0219", "자기소개");
+        member.updateInfo(request);
+
+        assertThat(member.getNickname()).isEqualTo(request.nickname());
+        assertThat(member.getDetail().getProfile().address()).isEqualTo(request.profileAddress());
+        assertThat(member.getDetail().getIntroduction()).isEqualTo(request.introduction());
     }
 }

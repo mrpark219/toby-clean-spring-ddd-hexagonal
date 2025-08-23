@@ -1,4 +1,4 @@
-package mr.park.tobycleanspringdddhexagonal.domain;
+package mr.park.tobycleanspringdddhexagonal.domain.member;
 
 public interface PasswordEncoder {
     String encode(String password);

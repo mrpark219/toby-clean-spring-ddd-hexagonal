@@ -1,6 +1,6 @@
 package mr.park.tobycleanspringdddhexagonal.adapter.security;
 
-import mr.park.tobycleanspringdddhexagonal.domain.PasswordEncoder;
+import mr.park.tobycleanspringdddhexagonal.domain.member.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 

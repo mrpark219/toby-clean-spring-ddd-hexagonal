@@ -1,7 +1,7 @@
-package mr.park.tobycleanspringdddhexagonal.application.required;
+package mr.park.tobycleanspringdddhexagonal.application.member.required;
 
-import mr.park.tobycleanspringdddhexagonal.domain.Email;
-import mr.park.tobycleanspringdddhexagonal.domain.Member;
+import mr.park.tobycleanspringdddhexagonal.domain.shared.Email;
+import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
 import org.springframework.data.repository.Repository;
 
 import java.util.Optional;

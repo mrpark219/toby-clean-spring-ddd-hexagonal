@@ -1,4 +1,4 @@
-package mr.park.tobycleanspringdddhexagonal.domain;
+package mr.park.tobycleanspringdddhexagonal.domain.member;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;

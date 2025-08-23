@@ -1,8 +1,8 @@
-package mr.park.tobycleanspringdddhexagonal.application.provided;
+package mr.park.tobycleanspringdddhexagonal.application.member.provided;
 
 import jakarta.validation.Valid;
-import mr.park.tobycleanspringdddhexagonal.domain.Member;
-import mr.park.tobycleanspringdddhexagonal.domain.MemberRegisterRequest;
+import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
+import mr.park.tobycleanspringdddhexagonal.domain.member.MemberRegisterRequest;
 
 /**
  * 회원의 등록과 관련된 기능을 제공한다.

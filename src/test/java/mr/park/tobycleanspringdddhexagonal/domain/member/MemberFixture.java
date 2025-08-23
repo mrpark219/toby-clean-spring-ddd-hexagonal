@@ -1,4 +1,4 @@
-package mr.park.tobycleanspringdddhexagonal.domain;
+package mr.park.tobycleanspringdddhexagonal.domain.member;
 
 public class MemberFixture {
     public static MemberRegisterRequest createMemberRegisterRequest(String email) {

@@ -1,9 +1,9 @@
-package mr.park.tobycleanspringdddhexagonal.application;
+package mr.park.tobycleanspringdddhexagonal.application.member;
 
 import lombok.RequiredArgsConstructor;
-import mr.park.tobycleanspringdddhexagonal.application.provided.MemberFinder;
-import mr.park.tobycleanspringdddhexagonal.application.required.MemberRepository;
-import mr.park.tobycleanspringdddhexagonal.domain.Member;
+import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberFinder;
+import mr.park.tobycleanspringdddhexagonal.application.member.required.MemberRepository;
+import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;

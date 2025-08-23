@@ -1,6 +1,6 @@
 package mr.park.tobycleanspringdddhexagonal.adapter.integration;
 
-import mr.park.tobycleanspringdddhexagonal.domain.Email;
+import mr.park.tobycleanspringdddhexagonal.domain.shared.Email;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.StdIo;
 import org.junitpioneer.jupiter.StdOut;

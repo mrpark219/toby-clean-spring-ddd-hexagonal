@@ -1,7 +1,7 @@
 package mr.park.tobycleanspringdddhexagonal.adapter.integration;
 
-import mr.park.tobycleanspringdddhexagonal.application.required.EmailSender;
-import mr.park.tobycleanspringdddhexagonal.domain.Email;
+import mr.park.tobycleanspringdddhexagonal.application.member.required.EmailSender;
+import mr.park.tobycleanspringdddhexagonal.domain.shared.Email;
 import org.springframework.context.annotation.Fallback;
 import org.springframework.stereotype.Component;
 

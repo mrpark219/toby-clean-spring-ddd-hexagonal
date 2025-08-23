@@ -1,4 +1,4 @@
-package mr.park.tobycleanspringdddhexagonal.domain;
+package mr.park.tobycleanspringdddhexagonal.domain.shared;
 
 import org.junit.jupiter.api.Test;
 
