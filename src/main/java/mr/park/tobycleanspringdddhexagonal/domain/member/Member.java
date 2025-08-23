@@ -49,7 +49,7 @@ public class Member extends AbstractEntity {
         return member;
     }
 
-    public void active() {
+    public void activate() {
         state(status == PENDING, "PENDING 상태가 아닙니다.");
 
         this.status = ACTIVE;

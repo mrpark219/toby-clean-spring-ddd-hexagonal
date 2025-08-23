@@ -41,7 +41,7 @@ public class MemberModifyService implements MemberRegister {
     public Member activate(Long memberId) {
         Member member = memberFinder.find(memberId);
 
-        member.active();
+        member.activate();
 
         return memberRepository.save(member);
     }

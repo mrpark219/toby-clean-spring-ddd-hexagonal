@@ -29,22 +29,22 @@ class MemberTest {
     void activate() {
         assertThat(member.getDetail().getActivatedAt()).isNull();
 
-        member.active();
+        member.activate();
 
         assertThat(member.getStatus()).isEqualTo(ACTIVE);
         assertThat(member.getDetail().getActivatedAt()).isNotNull();
     }
 
     @Test
-    void activeFail() {
-        member.active();
+    void activateFail() {
+        member.activate();
 
-        assertThatThrownBy(member::active).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(member::activate).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     void deactivate() {
-        member.active();
+        member.activate();
 
         member.deactivate();
 
@@ -56,7 +56,7 @@ class MemberTest {
     void deactivateFail() {
         assertThatThrownBy(member::deactivate).isInstanceOf(IllegalStateException.class);
 
-        member.active();
+        member.activate();
         member.deactivate();
 
         assertThatThrownBy(member::deactivate).isInstanceOf(IllegalStateException.class);
@@ -85,10 +85,10 @@ class MemberTest {
     }
 
     @Test
-    void isActive() {
+    void isActivate() {
         assertThat(member.isActive()).isFalse();
 
-        member.active();
+        member.activate();
 
         assertThat(member.isActive()).isTrue();
 
@@ -108,7 +108,7 @@ class MemberTest {
 
     @Test
     void updateInfo() {
-        member.active();
+        member.activate();
 
         var request = new MemberInfoUpdateRequest("park219", "park0219", "자기소개");
         member.updateInfo(request);
