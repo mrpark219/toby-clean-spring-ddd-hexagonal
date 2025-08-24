@@ -5,11 +5,8 @@ import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberFin
 import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegister;
 import mr.park.tobycleanspringdddhexagonal.application.member.required.EmailSender;
 import mr.park.tobycleanspringdddhexagonal.application.member.required.MemberRepository;
-import mr.park.tobycleanspringdddhexagonal.domain.member.DuplicateEmailException;
+import mr.park.tobycleanspringdddhexagonal.domain.member.*;
 import mr.park.tobycleanspringdddhexagonal.domain.shared.Email;
-import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
-import mr.park.tobycleanspringdddhexagonal.domain.member.MemberRegisterRequest;
-import mr.park.tobycleanspringdddhexagonal.domain.member.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -42,6 +39,24 @@ public class MemberModifyService implements MemberRegister {
         Member member = memberFinder.find(memberId);
 
         member.activate();
+
+        return memberRepository.save(member);
+    }
+
+    @Override
+    public Member deactivate(Long memberId) {
+        Member member = memberFinder.find(memberId);
+
+        member.deactivate();
+
+        return memberRepository.save(member);
+    }
+
+    @Override
+    public Member updateInfo(Long memberId, MemberInfoUpdateRequest memberInfoUpdateRequest) {
+        Member member = memberFinder.find(memberId);
+
+        member.updateInfo(memberInfoUpdateRequest);
 
         return memberRepository.save(member);
     }

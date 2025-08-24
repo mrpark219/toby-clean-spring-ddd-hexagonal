@@ -1,6 +1,5 @@
 package mr.park.tobycleanspringdddhexagonal.domain.member;
 
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,6 @@ import static lombok.AccessLevel.PROTECTED;
 @ToString(callSuper = true)
 @NoArgsConstructor(access = PROTECTED)
 public class MemberDetail extends AbstractEntity {
-    @Embedded
     private Profile profile;
 
     private String introduction;

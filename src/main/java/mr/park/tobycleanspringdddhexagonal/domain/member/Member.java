@@ -1,7 +1,6 @@
 package mr.park.tobycleanspringdddhexagonal.domain.member;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -11,8 +10,6 @@ import org.hibernate.annotations.NaturalId;
 
 import java.util.Objects;
 
-import static jakarta.persistence.CascadeType.ALL;
-import static jakarta.persistence.FetchType.LAZY;
 import static java.util.Objects.requireNonNull;
 import static lombok.AccessLevel.PROTECTED;
 import static mr.park.tobycleanspringdddhexagonal.domain.member.MemberStatus.*;
@@ -32,7 +29,6 @@ public class Member extends AbstractEntity {
 
     private MemberStatus status;
 
-    @OneToOne(fetch = LAZY, cascade = ALL)
     private MemberDetail detail;
 
     public static Member register(MemberRegisterRequest createRequest, PasswordEncoder passwordEncoder) {
