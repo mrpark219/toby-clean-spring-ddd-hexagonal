@@ -110,13 +110,15 @@ record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityMan
         // 기존 프로필 주소를 바꾸는 것도 가능
         memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("mrpark", "park0219", "Introduction"));
 
-        // 프로필 주소를 제거하는 것도 가능
-        memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("mrpark", "", "Introduction"));
-
         // 프로필 주소 중복는 허용하지 않음
         assertThatThrownBy(() -> {
             memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("mrpark", "mrpark1234", "Introduction"));
         }).isInstanceOf(DuplicateProfileException.class);
+
+        // 프로필 주소를 제거하는 것도 가능
+        memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("mrpark", "", "Introduction"));
+        memberRegister.updateInfo(member2.getId(), new MemberInfoUpdateRequest("mrpark", "", "Introduction"));
+        entityManager.flush();
     }
 
     @Test
