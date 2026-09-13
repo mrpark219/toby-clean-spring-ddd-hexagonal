@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.adapter.webapi.dto.MemberRegisterResponse;
 import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegister;
 import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
-import mr.park.tobycleanspringdddhexagonal.domain.member.MemberRegisterRequest;
+import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegisterRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

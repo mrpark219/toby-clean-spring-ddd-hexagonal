@@ -8,7 +8,7 @@ import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberReg
 import mr.park.tobycleanspringdddhexagonal.application.member.required.MemberRepository;
 import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
 import mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture;
-import mr.park.tobycleanspringdddhexagonal.domain.member.MemberRegisterRequest;
+import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegisterRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;

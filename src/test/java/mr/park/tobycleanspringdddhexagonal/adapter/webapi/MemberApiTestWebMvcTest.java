@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegister;
 import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
 import mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture;
-import mr.park.tobycleanspringdddhexagonal.domain.member.MemberRegisterRequest;
+import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegisterRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;

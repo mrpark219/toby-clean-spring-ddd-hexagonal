@@ -1,6 +1,6 @@
 package mr.park.tobycleanspringdddhexagonal;
 
-import mr.park.tobycleanspringdddhexagonal.domain.member.MemberRegisterRequest;
+import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegisterRequest;
 import org.assertj.core.api.AssertProvider;
 import org.assertj.core.api.Assertions;
 import org.springframework.test.json.JsonPathValueAssert;
