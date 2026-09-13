@@ -47,9 +47,9 @@ public class MemberDetail extends AbstractEntity {
         this.deactivatedAt = LocalDateTime.now();
     }
 
-    void updateInfo(MemberInfoUpdateRequest updateRequest) {
-        this.profile = convertToProfile((updateRequest.profileAddress()));
-        this.introduction = Objects.requireNonNull(updateRequest.introduction());
+    void updateInfo(MemberInfoUpdateInfo updateInfo) {
+        this.profile = convertToProfile((updateInfo.profileAddress()));
+        this.introduction = Objects.requireNonNull(updateInfo.introduction());
     }
 
     private Profile convertToProfile(@NotNull @Size(max = 15) String profileAddress) {

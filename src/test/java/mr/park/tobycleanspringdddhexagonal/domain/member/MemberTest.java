@@ -1,5 +1,6 @@
 package mr.park.tobycleanspringdddhexagonal.domain.member;
 
+import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberInfoUpdateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -102,7 +103,7 @@ class MemberTest {
         member.activate();
 
         var request = new MemberInfoUpdateRequest("park219", "park0219", "자기소개");
-        member.updateInfo(request);
+        member.updateInfo(request.toInfo());
 
         assertThat(member.getNickname()).isEqualTo(request.nickname());
         assertThat(member.getDetail().getProfile().address()).isEqualTo(request.profileAddress());
@@ -113,7 +114,7 @@ class MemberTest {
     void updateInfoFail() {
         assertThatThrownBy(() -> {
             var request = new MemberInfoUpdateRequest("park219", "park0219", "자기소개");
-            member.updateInfo(request);
+            member.updateInfo(request.toInfo());
         }).isInstanceOf(IllegalStateException.class);
     }
 }

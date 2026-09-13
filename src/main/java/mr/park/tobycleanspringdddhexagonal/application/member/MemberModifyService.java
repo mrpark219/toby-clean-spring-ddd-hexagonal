@@ -2,6 +2,7 @@ package mr.park.tobycleanspringdddhexagonal.application.member;
 
 import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberFinder;
+import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberInfoUpdateRequest;
 import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegister;
 import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegisterRequest;
 import mr.park.tobycleanspringdddhexagonal.application.member.required.EmailSender;
@@ -59,7 +60,7 @@ public class MemberModifyService implements MemberRegister {
 
         checkDuplicateProfile(member, memberInfoUpdateRequest.profileAddress());
 
-        member.updateInfo(memberInfoUpdateRequest);
+        member.updateInfo(memberInfoUpdateRequest.toInfo());
 
         return memberRepository.save(member);
     }
