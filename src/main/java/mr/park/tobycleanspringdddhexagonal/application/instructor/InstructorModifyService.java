@@ -1,0 +1,50 @@
+package mr.park.tobycleanspringdddhexagonal.application.instructor;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import mr.park.tobycleanspringdddhexagonal.application.instructor.provided.InstructorApplication;
+import mr.park.tobycleanspringdddhexagonal.application.instructor.provided.InstructorApplyRequest;
+import mr.park.tobycleanspringdddhexagonal.application.instructor.provided.InstructorFinder;
+import mr.park.tobycleanspringdddhexagonal.application.instructor.required.InstructorRepository;
+import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberFinder;
+import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
+import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+@Service
+@Transactional
+@Validated
+@RequiredArgsConstructor
+public class InstructorModifyService implements InstructorApplication {
+    private final InstructorRepository instructorRepository;
+    private final InstructorFinder instructorFinder;
+    private final MemberFinder memberFinder;
+
+    @Override
+    public Instructor apply(InstructorApplyRequest applyRequest) {
+        Member member = memberFinder.find(applyRequest.memberId());
+
+        Instructor instructor = Instructor.apply(member);
+
+        return instructorRepository.save(instructor);
+    }
+
+    @Override
+    public Instructor approve(Long instructorId) {
+        Instructor instructor = instructorFinder.find(instructorId);
+
+        instructor.approve();
+
+        return instructorRepository.save(instructor);
+    }
+
+    @Override
+    public Instructor reject(Long instructorId) {
+        Instructor instructor = instructorFinder.find(instructorId);
+
+        instructor.reject();
+
+        return instructorRepository.save(instructor);
+    }
+}
