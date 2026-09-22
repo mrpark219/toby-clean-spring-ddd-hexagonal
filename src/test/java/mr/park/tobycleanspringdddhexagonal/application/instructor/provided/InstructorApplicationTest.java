@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.application.instructor.required.InstructorRepository;
 import mr.park.tobycleanspringdddhexagonal.application.member.required.MemberRepository;
 import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
+import mr.park.tobycleanspringdddhexagonal.domain.instructor.InstructorFixture;
 import mr.park.tobycleanspringdddhexagonal.domain.instructor.InstructorStatus;
 import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
 import mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
 @RequiredArgsConstructor
 class InstructorApplicationTest {
@@ -30,7 +29,7 @@ class InstructorApplicationTest {
         Member member = MemberFixture.createActiveMember();
         memberRepository.save(member);
 
-        Instructor instructor = instructorApplication.apply(new InstructorApplyRequest(member.getId()));
+        Instructor instructor = instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
         assertThat(instructor.getId()).isNotNull();
         assertThat(instructor.getStatus()).isEqualTo(InstructorStatus.PENDING);
@@ -43,11 +42,11 @@ class InstructorApplicationTest {
         Member member = MemberFixture.createActiveMember();
         memberRepository.save(member);
 
-        instructorApplication.apply(new InstructorApplyRequest(member.getId()));
+        instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
         assertThatThrownBy(
-                () -> instructorApplication.apply(new InstructorApplyRequest(member.getId())))
-                .isInstanceOf(DataIntegrityViolationException.class);
+                () -> instructorApplication.apply(InstructorFixture.createApplyRequest(member)))
+                .isInstanceOf(DuplicateInstructorApplicationException.class);
     }
 
     @Test
@@ -67,6 +66,6 @@ class InstructorApplicationTest {
     private Instructor preparePendingInstructor() {
         Member member = MemberFixture.createActiveMember();
         memberRepository.save(member);
-        return instructorApplication.apply(new InstructorApplyRequest(member.getId()));
+        return instructorApplication.apply(InstructorFixture.createApplyRequest(member));
     }
 }

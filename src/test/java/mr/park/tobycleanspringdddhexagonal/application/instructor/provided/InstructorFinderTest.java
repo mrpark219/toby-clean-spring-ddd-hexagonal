@@ -7,13 +7,11 @@ import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
 import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
 import mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
 @RequiredArgsConstructor
 class InstructorFinderTest {

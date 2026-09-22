@@ -2,6 +2,7 @@ package mr.park.tobycleanspringdddhexagonal.application.instructor;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import mr.park.tobycleanspringdddhexagonal.application.instructor.provided.DuplicateInstructorApplicationException;
 import mr.park.tobycleanspringdddhexagonal.application.instructor.provided.InstructorApplication;
 import mr.park.tobycleanspringdddhexagonal.application.instructor.provided.InstructorApplyRequest;
 import mr.park.tobycleanspringdddhexagonal.application.instructor.provided.InstructorFinder;
@@ -25,9 +26,17 @@ public class InstructorModifyService implements InstructorApplication {
     public Instructor apply(InstructorApplyRequest applyRequest) {
         Member member = memberFinder.find(applyRequest.memberId());
 
+        checkDuplicateApplication(member);
+
         Instructor instructor = Instructor.apply(member);
 
         return instructorRepository.save(instructor);
+    }
+
+    private void checkDuplicateApplication(Member member) {
+        if (instructorRepository.findByMemberId(member.getId()).isPresent()) {
+            throw new DuplicateInstructorApplicationException("회원은 중복해서 강사 신청을 할 수 없습니다.");
+        }
     }
 
     @Override

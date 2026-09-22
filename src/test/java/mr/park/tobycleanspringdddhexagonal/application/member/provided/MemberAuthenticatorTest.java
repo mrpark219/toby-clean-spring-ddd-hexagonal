@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
@@ -23,9 +24,11 @@ class MemberAuthenticatorTest {
     @Test
     void login() {
         var registerRequest = MemberFixture.createMemberRegisterRequest();
-        memberRegister.register(registerRequest).activate();
+        var member = memberRegister.register(registerRequest);
+        member.activate();
 
-        var member = memberAuthenticator.login(new MemberLoginRequest(registerRequest.email(), registerRequest.password()));
+        var loggedInMember = memberAuthenticator.login(new MemberLoginRequest(registerRequest.email(), registerRequest.password()));
+        assertThat(loggedInMember).isEqualTo(member);
     }
 
     @Test
