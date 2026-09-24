@@ -9,12 +9,10 @@ import mr.park.tobycleanspringdddhexagonal.application.member.required.MemberRep
 import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
 import mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture;
 import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegisterRequest;
+import mr.park.tobycleanspringdddhexagonal.support.stereotype.WebApiAdapterTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.springframework.test.web.servlet.assertj.MvcTestResult;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 
@@ -26,9 +24,7 @@ import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Transactional
+@WebApiAdapterTest
 @RequiredArgsConstructor
 class MemberApiTest {
     final MockMvcTester mvcTester;

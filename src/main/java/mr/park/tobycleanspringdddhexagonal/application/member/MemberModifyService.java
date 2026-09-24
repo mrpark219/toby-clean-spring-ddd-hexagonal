@@ -9,13 +9,9 @@ import mr.park.tobycleanspringdddhexagonal.application.member.required.EmailSend
 import mr.park.tobycleanspringdddhexagonal.application.member.required.MemberRepository;
 import mr.park.tobycleanspringdddhexagonal.domain.member.*;
 import mr.park.tobycleanspringdddhexagonal.domain.shared.Email;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
+import mr.park.tobycleanspringdddhexagonal.support.stereotype.ValidatedApplicationService;
 
-@Service
-@Transactional
-@Validated
+@ValidatedApplicationService
 @RequiredArgsConstructor
 public class MemberModifyService implements MemberRegister {
     private final MemberFinder memberFinder;

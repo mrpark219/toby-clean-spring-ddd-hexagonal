@@ -4,13 +4,9 @@ import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberFinder;
 import mr.park.tobycleanspringdddhexagonal.application.member.required.MemberRepository;
 import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
+import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationService;
 
-@Service
-@Transactional
-@Validated
+@ApplicationService
 @RequiredArgsConstructor
 public class MemberQueryService implements MemberFinder {
     private final MemberRepository memberRepository;

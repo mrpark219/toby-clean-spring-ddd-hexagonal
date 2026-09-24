@@ -8,13 +8,9 @@ import mr.park.tobycleanspringdddhexagonal.application.member.required.MemberRep
 import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
 import mr.park.tobycleanspringdddhexagonal.domain.member.PasswordEncoder;
 import mr.park.tobycleanspringdddhexagonal.domain.shared.Email;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
+import mr.park.tobycleanspringdddhexagonal.support.stereotype.ValidatedApplicationService;
 
-@Service
-@Transactional
-@Validated
+@ValidatedApplicationService
 @RequiredArgsConstructor
 public class MemberAuthenticationService implements MemberAuthenticator {
     private final MemberRepository memberRepository;

@@ -1,16 +1,14 @@
 package mr.park.tobycleanspringdddhexagonal.application.instructor;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.application.instructor.provided.InstructorFinder;
 import mr.park.tobycleanspringdddhexagonal.application.instructor.required.InstructorRepository;
 import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
-import org.springframework.stereotype.Service;
+import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationService;
 
 import java.util.Optional;
 
-@Service
-@Transactional
+@ApplicationService
 @RequiredArgsConstructor
 public class InstructorQueryService implements InstructorFinder {
     private final InstructorRepository instructorRepository;

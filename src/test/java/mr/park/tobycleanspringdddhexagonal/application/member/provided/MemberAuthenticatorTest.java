@@ -1,25 +1,18 @@
 package mr.park.tobycleanspringdddhexagonal.application.member.provided;
 
-import jakarta.transaction.Transactional;
-import mr.park.tobycleanspringdddhexagonal.SplearnTestConfiguration;
+import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture;
+import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationServiceTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
-@Transactional
-@Import(SplearnTestConfiguration.class)
+@ApplicationServiceTest
+@RequiredArgsConstructor
 class MemberAuthenticatorTest {
-    @Autowired
-    private MemberAuthenticator memberAuthenticator;
-
-    @Autowired
-    private MemberRegister memberRegister;
+    final MemberAuthenticator memberAuthenticator;
+    final MemberRegister memberRegister;
 
     @Test
     void login() {

@@ -1,18 +1,16 @@
 package mr.park.tobycleanspringdddhexagonal.application.instructor.provided;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegister;
 import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
 import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
 import mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture;
+import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationServiceTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@Transactional
+@ApplicationServiceTest
 @RequiredArgsConstructor
 class InstructorFinderTest {
     final InstructorFinder instructorFinder;

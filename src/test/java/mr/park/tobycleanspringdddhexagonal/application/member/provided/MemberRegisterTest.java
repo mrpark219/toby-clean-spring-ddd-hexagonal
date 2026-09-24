@@ -1,13 +1,10 @@
 package mr.park.tobycleanspringdddhexagonal.application.member.provided;
 
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
-import mr.park.tobycleanspringdddhexagonal.SplearnTestConfiguration;
+import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationServiceTest;
 import mr.park.tobycleanspringdddhexagonal.domain.member.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
 import static mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture.createMemberRegisterRequest;
 import static mr.park.tobycleanspringdddhexagonal.domain.member.MemberStatus.DEACTIVATED;
@@ -15,11 +12,8 @@ import static mr.park.tobycleanspringdddhexagonal.domain.member.MemberStatus.PEN
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
-@Transactional
-@Import(SplearnTestConfiguration.class)
+@ApplicationServiceTest
 record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityManager) {
-
     @Test
     void register() {
         Member member = memberRegister.register(createMemberRegisterRequest());

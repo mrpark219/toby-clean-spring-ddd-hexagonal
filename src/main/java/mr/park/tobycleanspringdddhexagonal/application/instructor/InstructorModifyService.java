@@ -1,6 +1,5 @@
 package mr.park.tobycleanspringdddhexagonal.application.instructor;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.application.instructor.provided.DuplicateInstructorApplicationException;
 import mr.park.tobycleanspringdddhexagonal.application.instructor.provided.InstructorApplication;
@@ -10,12 +9,9 @@ import mr.park.tobycleanspringdddhexagonal.application.instructor.required.Instr
 import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberFinder;
 import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
 import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
+import mr.park.tobycleanspringdddhexagonal.support.stereotype.ValidatedApplicationService;
 
-@Service
-@Transactional
-@Validated
+@ValidatedApplicationService
 @RequiredArgsConstructor
 public class InstructorModifyService implements InstructorApplication {
     private final InstructorRepository instructorRepository;
