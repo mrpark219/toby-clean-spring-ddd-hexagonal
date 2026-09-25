@@ -2,15 +2,20 @@ package mr.park.tobycleanspringdddhexagonal.domain.member;
 
 
 import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegisterRequest;
+import org.instancio.Instancio;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import static org.instancio.Select.field;
 
 public class MemberFixture {
     public static MemberRegisterRequest createMemberRegisterRequest(String email) {
-        return new MemberRegisterRequest(email, "mrpark219", "longSecret");
+        return Instancio.of(MemberRegisterRequest.class)
+                .set(field(MemberRegisterRequest::email), email)
+                .create();
     }
 
     public static MemberRegisterRequest createMemberRegisterRequest() {
-        return createMemberRegisterRequest("mrpark219@gmail.com");
+        return createMemberRegisterRequest(Instancio.gen().net().email().get());
     }
 
     public static PasswordEncoder createPasswordEncoder() {

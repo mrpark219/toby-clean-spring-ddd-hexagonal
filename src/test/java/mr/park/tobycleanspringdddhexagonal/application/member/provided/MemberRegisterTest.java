@@ -2,8 +2,8 @@ package mr.park.tobycleanspringdddhexagonal.application.member.provided;
 
 import jakarta.persistence.EntityManager;
 import jakarta.validation.ConstraintViolationException;
-import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationServiceTest;
 import mr.park.tobycleanspringdddhexagonal.domain.member.*;
+import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationServiceTest;
 import org.junit.jupiter.api.Test;
 
 import static mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture.createMemberRegisterRequest;
@@ -24,9 +24,11 @@ record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityMan
 
     @Test
     void duplicateEmailFail() {
-        memberRegister.register(createMemberRegisterRequest());
+        MemberRegisterRequest memberRegisterRequest = createMemberRegisterRequest();
 
-        assertThatThrownBy(() -> memberRegister.register(createMemberRegisterRequest()))
+        memberRegister.register(memberRegisterRequest);
+
+        assertThatThrownBy(() -> memberRegister.register(memberRegisterRequest))
                 .isInstanceOf(DuplicateEmailException.class);
     }
 

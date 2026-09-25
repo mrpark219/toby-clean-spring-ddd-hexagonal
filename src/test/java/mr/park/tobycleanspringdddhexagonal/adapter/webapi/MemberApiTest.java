@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.adapter.webapi.dto.MemberRegisterResponse;
 import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegister;
+import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegisterRequest;
 import mr.park.tobycleanspringdddhexagonal.application.member.required.MemberRepository;
 import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
 import mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture;
-import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegisterRequest;
 import mr.park.tobycleanspringdddhexagonal.support.stereotype.WebApiAdapterTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
@@ -59,9 +59,9 @@ class MemberApiTest {
 
     @Test
     void duplicateEmail() throws JsonProcessingException {
-        memberRegister.register(MemberFixture.createMemberRegisterRequest());
-
         MemberRegisterRequest request = MemberFixture.createMemberRegisterRequest();
+        memberRegister.register(request);
+
         String requestJson = objectMapper.writeValueAsString(request);
 
         MvcTestResult result = mvcTester.post().uri("/api/members").contentType(APPLICATION_JSON)
