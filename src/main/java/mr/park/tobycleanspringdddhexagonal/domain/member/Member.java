@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import mr.park.tobycleanspringdddhexagonal.domain.AbstractEntity;
+import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
 import mr.park.tobycleanspringdddhexagonal.domain.shared.Email;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.util.Assert;
