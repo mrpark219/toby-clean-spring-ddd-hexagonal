@@ -1,6 +1,7 @@
 package mr.park.tobycleanspringdddhexagonal.domain.instructor;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,11 +16,9 @@ import static org.springframework.util.Assert.state;
 @ToString(callSuper = true, exclude = "member")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Instructor extends AbstractEntity {
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     Member member;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20)
     InstructorStatus status;
 
     public static Instructor apply(Member member) {

@@ -1,11 +1,11 @@
 package mr.park.tobycleanspringdddhexagonal.domain.member;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import mr.park.tobycleanspringdddhexagonal.domain.AbstractEntity;
-import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
 import mr.park.tobycleanspringdddhexagonal.domain.shared.Email;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.util.Assert;
@@ -31,6 +31,7 @@ public class Member extends AbstractEntity {
 
     private MemberStatus status;
 
+    @OneToOne
     private MemberDetail detail;
 
     public static Member register(MemberRegisterInfo registerInfo, PasswordEncoder passwordEncoder) {

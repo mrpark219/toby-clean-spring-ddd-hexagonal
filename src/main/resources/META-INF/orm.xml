@@ -67,6 +67,42 @@
         </attributes>
     </entity>
 
+    <entity class="mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor">
+        <attributes>
+            <basic name="status">
+                <column name="status" length="20"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+            <one-to-one name="member" fetch="LAZY"/>
+        </attributes>
+    </entity>
+
+    <entity class="mr.park.tobycleanspringdddhexagonal.domain.course.Course">
+        <attributes>
+            <basic name="title">
+                <column name="title" nullable="false" length="100"/>
+            </basic>
+            <basic name="status">
+                <column name="status" nullable="false" length="20"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+            <many-to-one name="instructor" fetch="LAZY" optional="false"/>
+            <one-to-one name="detail" fetch="LAZY" optional="false">
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-one>
+        </attributes>
+    </entity>
+
+    <entity class="mr.park.tobycleanspringdddhexagonal.domain.course.CourseDetail">
+        <attributes>
+            <basic name="description">
+                <column name="description" length="500"/>
+            </basic>
+        </attributes>
+    </entity>
+
     <embeddable class="mr.park.tobycleanspringdddhexagonal.domain.member.Profile">
         <attributes>
             <basic name="address">

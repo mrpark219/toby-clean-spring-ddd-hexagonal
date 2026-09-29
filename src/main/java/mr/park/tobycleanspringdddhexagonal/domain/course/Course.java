@@ -1,6 +1,8 @@
 package mr.park.tobycleanspringdddhexagonal.domain.course;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.ToString;
 import mr.park.tobycleanspringdddhexagonal.domain.AbstractEntity;
 import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
 import org.springframework.lang.Nullable;
+import org.springframework.util.StringUtils;
 
 import java.util.Objects;
 
@@ -18,17 +21,14 @@ import static org.springframework.util.Assert.state;
 @ToString(callSuper = true, exclude = {})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Course extends AbstractEntity {
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne
     Instructor instructor;
 
-    @Column(nullable = false, length = 100)
     String title;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
     CourseStatus status;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne
     CourseDetail detail;
 
     public Course(Instructor instructor, String title, @Nullable String description) {
@@ -43,6 +43,7 @@ public class Course extends AbstractEntity {
 
     public void submitForReview() {
         state(status == CourseStatus.DRAFT, "DRAFT 상태가 아닙니다");
+        state(StringUtils.hasText(detail.getDescription()), "강의 소개가 등록되지 않았습니다");
 
         this.status = CourseStatus.IN_REVIEW;
     }
@@ -67,5 +68,10 @@ public class Course extends AbstractEntity {
 
     public void ensurePublished() {
         state(status == CourseStatus.PUBLISHED, "PUBLISHED 상태가 아닙니다");
+    }
+
+    public void updateInfo(CourseUpdateInfo updateInfo) {
+        this.title = Objects.requireNonNull(updateInfo.title());
+        this.detail.updateInfo(updateInfo);
     }
 }

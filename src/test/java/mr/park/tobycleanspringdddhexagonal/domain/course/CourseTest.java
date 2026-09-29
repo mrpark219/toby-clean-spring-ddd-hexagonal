@@ -13,6 +13,7 @@ class CourseTest {
     @BeforeEach
     void setUp() {
         this.course = CourseFixture.createCourse();
+        this.course.updateInfo(new CourseUpdateInfo(course.getTitle(), "Description"));
     }
 
     @Test
@@ -47,6 +48,15 @@ class CourseTest {
     }
 
     @Test
+    void submitForReviewFail() {
+        var instructor = InstructorFixture.createActiveInstructor();
+        Course course = new Course(instructor, "Clean Spring 2", null);
+
+        assertThatThrownBy(() -> course.submitForReview())
+                .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
     void publish() {
         course.submitForReview();
 
@@ -71,5 +81,13 @@ class CourseTest {
 
         assertThatThrownBy(() -> course.archive())
                 .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    void updateInfo() {
+        course.updateInfo(new CourseUpdateInfo("Clean Spring 3", "Updated description"));
+
+        assertThat(course.getTitle()).isEqualTo("Clean Spring 3");
+        assertThat(course.getDetail().getDescription()).isEqualTo("Updated description");
     }
 }
