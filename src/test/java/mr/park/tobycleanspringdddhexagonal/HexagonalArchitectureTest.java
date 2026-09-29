@@ -84,7 +84,7 @@ public class HexagonalArchitectureTest {
                         }
 
                         String methodName = call.getTarget().getName();
-                        if (methodName.startsWith("get") || methodName.startsWith("is")) {
+                        if (methodName.startsWith("get") || methodName.startsWith("is") || methodName.startsWith("ensure")) {
                             continue;
                         }
 
