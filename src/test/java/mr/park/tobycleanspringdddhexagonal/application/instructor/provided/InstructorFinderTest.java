@@ -1,26 +1,22 @@
 package mr.park.tobycleanspringdddhexagonal.application.instructor.provided;
 
 import lombok.RequiredArgsConstructor;
-import mr.park.tobycleanspringdddhexagonal.application.member.provided.MemberRegister;
 import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
-import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
-import mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture;
 import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationServiceTest;
+import mr.park.tobycleanspringdddhexagonal.support.test.BaseApplicationServiceTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ApplicationServiceTest
 @RequiredArgsConstructor
-class InstructorFinderTest {
+class InstructorFinderTest extends BaseApplicationServiceTest {
     final InstructorFinder instructorFinder;
     final InstructorApplication instructorApplication;
-    final MemberRegister memberRegister;
 
     @Test
     void findByMember() {
-        Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
-        member = memberRegister.activate(member.getId());
+        prepareMember();
 
         Instructor instructor = instructorApplication.apply(new InstructorApplyRequest(member.getId()));
 

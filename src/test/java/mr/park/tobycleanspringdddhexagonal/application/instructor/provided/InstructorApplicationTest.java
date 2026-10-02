@@ -2,13 +2,11 @@ package mr.park.tobycleanspringdddhexagonal.application.instructor.provided;
 
 import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.application.instructor.required.InstructorRepository;
-import mr.park.tobycleanspringdddhexagonal.application.member.required.MemberRepository;
 import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
 import mr.park.tobycleanspringdddhexagonal.domain.instructor.InstructorFixture;
 import mr.park.tobycleanspringdddhexagonal.domain.instructor.InstructorStatus;
-import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
-import mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture;
 import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationServiceTest;
+import mr.park.tobycleanspringdddhexagonal.support.test.BaseApplicationServiceTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,15 +14,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ApplicationServiceTest
 @RequiredArgsConstructor
-class InstructorApplicationTest {
+class InstructorApplicationTest extends BaseApplicationServiceTest {
     final InstructorApplication instructorApplication;
     final InstructorRepository instructorRepository;
-    final MemberRepository memberRepository;
 
     @Test
     void apply() {
-        Member member = MemberFixture.createActiveMember();
-        memberRepository.save(member);
+        prepareMember();
 
         Instructor instructor = instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
@@ -36,8 +32,7 @@ class InstructorApplicationTest {
 
     @Test
     void duplicateApply() {
-        Member member = MemberFixture.createActiveMember();
-        memberRepository.save(member);
+        prepareMember();
 
         instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
@@ -61,8 +56,7 @@ class InstructorApplicationTest {
     }
 
     private Instructor preparePendingInstructor() {
-        Member member = MemberFixture.createActiveMember();
-        memberRepository.save(member);
+        prepareMember();
         return instructorApplication.apply(InstructorFixture.createApplyRequest(member));
     }
 }
