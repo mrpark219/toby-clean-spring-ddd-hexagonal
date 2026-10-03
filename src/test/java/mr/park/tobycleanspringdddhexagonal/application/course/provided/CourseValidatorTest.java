@@ -41,4 +41,29 @@ class CourseValidatorTest extends BaseApplicationServiceTest {
         courseValidator.validateForCreate(instructor2, new CourseCreateRequest(instructor2.getId(), "Clean Spring", null));
     }
 
+    @Test
+    void titleDuplicationForUpdate() {
+        var instructor1 = prepareInstructor();
+        var instructor2 = prepareInstructor();
+
+        Course course1_1 = courseRepository.save(CourseFixture.createCourse(instructor1, "Clean Spring"));
+        Course course1_2 = courseRepository.save(CourseFixture.createCourse(instructor1, "Clean Code"));
+        Course course2 = courseRepository.save(CourseFixture.createCourse(instructor2, "Clean Spring"));
+
+        // instructor1 title 변경 없이 update - OK
+        courseValidator.validateForUpdate(course1_1, CourseFixture.createCourseInfoUpdateRequest(course1_1.getTitle()));
+
+        // instructor1 title 변경하는데 중복 발생 - FAIL
+        assertThatThrownBy(() ->
+                courseValidator.validateForUpdate(course1_1, CourseFixture.createCourseInfoUpdateRequest(course1_2.getTitle()))
+        ).isInstanceOfSatisfying(ValidationException.class, e -> {
+            assertThat(e.getErrors()).hasSize(1);
+        });
+
+        // instructor2 title 변경 없이 update - OK
+        courseValidator.validateForUpdate(course2, CourseFixture.createCourseInfoUpdateRequest(course2.getTitle()));
+
+        // instructor2 다른 강사의 강의 제목으로 변경 - OK
+        courseValidator.validateForUpdate(course2, CourseFixture.createCourseInfoUpdateRequest(course1_2.getTitle()));
+    }
 }
