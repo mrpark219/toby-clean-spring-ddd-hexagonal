@@ -11,7 +11,7 @@ import mr.park.tobycleanspringdddhexagonal.support.stereotype.ValidatedApplicati
 
 @ValidatedApplicationService
 @RequiredArgsConstructor
-public class CourseModifyService implements CourseCreator {
+public class CourseModifyService implements CourseCreator, CoursePublisher {
     private final CourseRepository courseRepository;
     private final CourseFinder courseFinder;
     private final CourseValidator courseValidator;
@@ -35,6 +35,39 @@ public class CourseModifyService implements CourseCreator {
         courseValidator.validateForUpdate(course, infoUpdateRequest);
 
         course.updateInfo(infoUpdateRequest.toInfo());
+
+        return courseRepository.save(course);
+    }
+
+    @Override
+    public Course submitForReview(Long courseId) {
+        Course course = courseFinder.find(courseId);
+
+        courseValidator.validateForReview(course);
+
+        course.submitForReview();
+
+        return courseRepository.save(course);
+    }
+
+    @Override
+    public Course publish(Long courseId) {
+        Course course = courseFinder.find(courseId);
+
+        courseValidator.validateForPublish(course);
+
+        course.publish();
+
+        return courseRepository.save(course);
+    }
+
+    @Override
+    public Course archive(Long courseId) {
+        Course course = courseFinder.find(courseId);
+
+        courseValidator.validateForArchive(course);
+
+        course.archive();
 
         return courseRepository.save(course);
     }
