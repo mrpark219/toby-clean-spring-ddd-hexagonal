@@ -81,4 +81,8 @@ public class Member extends AbstractEntity {
     public boolean isActive() {
         return this.status == ACTIVE;
     }
+
+    public void ensureActive() {
+        state(status == ACTIVE, "회원의 상태가 ACTIVE가 아닙니다.");
+    }
 }
