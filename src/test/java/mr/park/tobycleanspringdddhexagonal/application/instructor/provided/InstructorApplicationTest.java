@@ -20,7 +20,7 @@ class InstructorApplicationTest extends BaseApplicationServiceTest {
 
     @Test
     void apply() {
-        prepareMember();
+        prepareActiveMember();
 
         Instructor instructor = instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
@@ -32,7 +32,7 @@ class InstructorApplicationTest extends BaseApplicationServiceTest {
 
     @Test
     void duplicateApply() {
-        prepareMember();
+        prepareActiveMember();
 
         instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
@@ -56,7 +56,7 @@ class InstructorApplicationTest extends BaseApplicationServiceTest {
     }
 
     private Instructor preparePendingInstructor() {
-        prepareMember();
+        prepareActiveMember();
         return instructorApplication.apply(InstructorFixture.createApplyRequest(member));
     }
 }

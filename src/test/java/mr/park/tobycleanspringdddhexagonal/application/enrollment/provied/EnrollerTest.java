@@ -1,0 +1,47 @@
+package mr.park.tobycleanspringdddhexagonal.application.enrollment.provied;
+
+import lombok.RequiredArgsConstructor;
+import mr.park.tobycleanspringdddhexagonal.domain.course.Course;
+import mr.park.tobycleanspringdddhexagonal.domain.enrollment.Enrollment;
+import mr.park.tobycleanspringdddhexagonal.domain.enrollment.EnrollmentStatus;
+import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
+import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationServiceTest;
+import mr.park.tobycleanspringdddhexagonal.support.test.BaseApplicationServiceTest;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ApplicationServiceTest
+@RequiredArgsConstructor
+class EnrollerTest extends BaseApplicationServiceTest {
+    final Enroller enroller;
+
+    @Test
+    void enroll() {
+        Member member = prepareActiveMember();
+        Course course = preparePublishedCourse();
+
+        Enrollment enrollment = enroller.enroll(new EnrollRequest(member.getId(), course.getId()));
+
+        assertThat(enrollment.getId()).isNotNull();
+    }
+
+    @Test
+    void startStudying() {
+        prepareEnrollment();
+
+        Enrollment enrollmentStudying = enroller.startStudying(this.enrollment.getId());
+
+        assertThat(enrollmentStudying.getStatus()).isEqualTo(EnrollmentStatus.STUDYING);
+    }
+
+    @Test
+    void complete() {
+        prepareEnrollment();
+        enroller.startStudying(this.enrollment.getId());
+
+        Enrollment enrollmentStudying = enroller.complete(this.enrollment.getId());
+
+        assertThat(enrollmentStudying.getStatus()).isEqualTo(EnrollmentStatus.COMPLETED);
+    }
+}
