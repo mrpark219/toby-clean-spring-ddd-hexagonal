@@ -35,7 +35,6 @@ public class BaseApplicationServiceTest {
     protected Course course;
     protected Enrollment enrollment;
 
-    @NonNull
     protected Instructor prepareInstructor() {
         prepareActiveMember();
 

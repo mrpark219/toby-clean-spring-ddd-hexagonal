@@ -1,15 +1,10 @@
 package mr.park.tobycleanspringdddhexagonal.application.course.required;
 
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import mr.park.tobycleanspringdddhexagonal.application.instructor.required.InstructorRepository;
-import mr.park.tobycleanspringdddhexagonal.application.member.required.MemberRepository;
+import mr.park.tobycleanspringdddhexagonal.domain.AbstractEntity;
 import mr.park.tobycleanspringdddhexagonal.domain.course.Course;
 import mr.park.tobycleanspringdddhexagonal.domain.course.CourseFixture;
-import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
-import mr.park.tobycleanspringdddhexagonal.domain.instructor.InstructorFixture;
-import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
-import mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture;
+import mr.park.tobycleanspringdddhexagonal.support.test.BaseRepositoryTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -24,19 +19,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
 @RequiredArgsConstructor
-class CourseRepositoryTest {
+class CourseRepositoryTest extends BaseRepositoryTest {
     final CourseRepository courseRepository;
-    final EntityManager entityManager;
-    final MemberRepository memberRepository;
-    final InstructorRepository instructorRepository;
-
-    Member member;
-    Instructor instructor;
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.save(MemberFixture.createActiveMember());
-        instructor = instructorRepository.save(InstructorFixture.createActiveInstructor(member));
+        member = prepareActiveMember();
+        instructor = prepareActiveInstructor(member);
     }
 
     @Test
@@ -56,10 +45,10 @@ class CourseRepositoryTest {
     @Test
     void findByTitleContaining() {
         List<Long> ids = Stream.of(
-                        CourseFixture.createCourse(instructor, "Hello Spring"),
-                        CourseFixture.createCourse(instructor, "Clean Spring 2"),
-                        CourseFixture.createCourse(instructor, "Clean Code"))
-                .map(course -> courseRepository.save(course).getId())
+                        prepareCourse(instructor, "Hello Spring"),
+                        prepareCourse(instructor, "Clean Spring 2"),
+                        prepareCourse(instructor, "Clean Code"))
+                .map(AbstractEntity::getId)
                 .toList();
 
         assertThat(courseRepository.findByTitleContaining("Spring").stream().map(Course::getId))
@@ -77,13 +66,13 @@ class CourseRepositoryTest {
 
     @Test
     void findByInstructor() {
-        var member2 = memberRepository.save(MemberFixture.createActiveMember());
-        var instructor2 = instructorRepository.save(InstructorFixture.createActiveInstructor(member2));
+        var instructor1 = prepareActiveInstructor();
+        var instructor2 = prepareActiveInstructor();
 
-        var course = courseRepository.save(CourseFixture.createCourse(instructor, "title"));
-        var course2 = courseRepository.save(CourseFixture.createCourse(instructor2, "title2"));
+        var course = prepareCourse(instructor1, null);
+        var course2 = prepareCourse(instructor2, null);
 
-        List<Course> courses = courseRepository.findByInstructorId(instructor.getId());
+        List<Course> courses = courseRepository.findByInstructorId(instructor1.getId());
         assertThat(courses).singleElement().isEqualTo(course);
 
         List<Course> courses2 = courseRepository.findByInstructorId(instructor2.getId());
@@ -95,7 +84,7 @@ class CourseRepositoryTest {
 
     @Test
     void uniqueTitleAndInstructor() {
-        courseRepository.save(CourseFixture.createCourse(instructor, "title"));
+        prepareCourse(instructor, "title");
 
         assertThatThrownBy(() -> courseRepository.save(CourseFixture.createCourse(instructor, "title")))
                 .isInstanceOf(DataIntegrityViolationException.class);

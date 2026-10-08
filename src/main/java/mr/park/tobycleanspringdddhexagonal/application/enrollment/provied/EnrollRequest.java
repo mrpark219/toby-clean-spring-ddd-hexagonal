@@ -1,9 +1,9 @@
 package mr.park.tobycleanspringdddhexagonal.application.enrollment.provied;
 
-import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 
 public record EnrollRequest(
-        @Nonnull Long memberId,
-        @Nonnull Long courseId
+        @NotNull Long memberId,
+        @NotNull Long courseId
 ) {
 }
