@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import mr.park.tobycleanspringdddhexagonal.domain.AbstractEntity;
 import mr.park.tobycleanspringdddhexagonal.domain.course.Course;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,5 +58,29 @@ public class Curriculum extends AbstractEntity {
 
     public void updateLessonTitle(int sectionIndex, int lessonIndex, String title) {
         this.sections.get(sectionIndex).updateLessonTitle(lessonIndex, title);
+    }
+
+    public void removeLesson(int sectionIndex, int lessonIndex) {
+        this.sections.get(sectionIndex).removeLesson(lessonIndex);
+    }
+
+    public List<Lesson> allLessons() {
+        return this.getSections().stream()
+                .flatMap(section -> section.getLessons().stream())
+                .toList();
+    }
+
+    public void removeSection(int sectionIndex) {
+        Assert.state(this.sections.size() > 1, "마지막 남은 섹션은 삭제할 수 없습니다");
+
+        Section removed = this.sections.remove(sectionIndex);
+
+        if (sectionIndex == 0) {
+            Section next = this.sections.getFirst();
+            removed.moveAllLessonsTo(next, 0);
+        } else {
+            Section previous = this.sections.get(sectionIndex - 1);
+            removed.moveAllLessonsTo(previous, previous.getLessons().size());
+        }
     }
 }

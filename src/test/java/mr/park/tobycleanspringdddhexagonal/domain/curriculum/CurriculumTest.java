@@ -3,6 +3,8 @@ package mr.park.tobycleanspringdddhexagonal.domain.curriculum;
 import mr.park.tobycleanspringdddhexagonal.domain.course.CourseFixture;
 import org.junit.jupiter.api.Test;
 
+import static mr.park.tobycleanspringdddhexagonal.domain.curriculum.LessonContent.lesson;
+import static mr.park.tobycleanspringdddhexagonal.domain.curriculum.SectionContent.section;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -96,5 +98,67 @@ class CurriculumTest {
                 .flatMap(section -> section.getLessons().stream())
                 .toList();
         assertThat(lessons).extracting(Lesson::getTitle).containsExactly("L0_0 Updated", "L0_1", "L1 Updated");
+    }
+
+    @Test
+    void removeLesson() {
+        Curriculum curriculum = CurriculumFixture.createCurriculum();
+        Section s0 = curriculum.addSection("S0");
+        Section s1 = curriculum.addSection("S1");
+        Lesson l0 = curriculum.addLesson(0, "L0");
+        Lesson l1 = curriculum.addLesson(0, "L1");
+        Lesson l2 = curriculum.addLesson(1, "L2");
+        Lesson l3 = curriculum.addLesson(1, "L3");
+
+        assertThat(curriculum.allLessons()).extracting(Lesson::getTitle).containsExactly("L0", "L1", "L2", "L3");
+
+        curriculum.removeLesson(0, 0);
+        assertThat(curriculum.allLessons()).extracting(Lesson::getTitle).containsExactly("L1", "L2", "L3");
+
+        curriculum.removeLesson(1, 1);
+        assertThat(curriculum.allLessons()).extracting(Lesson::getTitle).containsExactly("L1", "L2");
+    }
+
+    @Test
+    void removeSection() {
+        Curriculum curriculum = CurriculumFixture.createCurriculum();
+        Section s0 = curriculum.addSection("S0");
+        Section s1 = curriculum.addSection("S1");
+        Section s2 = curriculum.addSection("S2");
+        Lesson l0 = curriculum.addLesson(0, "L0");
+        Lesson l1 = curriculum.addLesson(0, "L1");
+        Lesson l2 = curriculum.addLesson(1, "L2");
+        Lesson l3 = curriculum.addLesson(1, "L3");
+        Lesson l4 = curriculum.addLesson(2, "L4");
+        Lesson l5 = curriculum.addLesson(2, "L5");
+
+
+        assertThat(SectionContent.from(curriculum)).containsExactly(
+                section("S0", lesson("L0"), lesson("L1")),
+                section("S1", lesson("L2"), lesson("L3")),
+                section("S2", lesson("L4"), lesson("L5"))
+        );
+
+        // 섹션을 삭제하면 수업은 앞 섹션 수업의 뒤에 추가된다
+        curriculum.removeSection(2);
+
+        assertThat(curriculum.getSections()).containsExactly(s0, s1);
+        assertThat(SectionContent.from(curriculum)).containsExactly(
+                section("S0", lesson("L0"), lesson("L1")),
+                section("S1", lesson("L2"), lesson("L3"), lesson("L4"), lesson("L5"))
+        );
+
+        // 단, 첫 번쨰 섹션을 삭제하면 수업은 다음 섹션 앞부분으로 추가된다
+        curriculum.removeSection(0);
+        assertThat(curriculum.getSections()).containsExactly(s1);
+        assertThat(SectionContent.from(curriculum)).containsExactly(
+                section("S1", lesson("L0"), lesson("L1"),
+                        lesson("L2"), lesson("L3"),
+                        lesson("L4"), lesson("L5"))
+        );
+
+        // 하나 남은 섹션은 삭제할 수 없다
+        assertThatThrownBy(() -> curriculum.removeSection(0))
+                .isInstanceOf(IllegalStateException.class);
     }
 }
