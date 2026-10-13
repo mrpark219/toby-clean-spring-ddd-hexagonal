@@ -7,11 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import mr.park.tobycleanspringdddhexagonal.domain.AbstractEntity;
 import mr.park.tobycleanspringdddhexagonal.domain.course.Course;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+
+import static org.springframework.util.Assert.state;
 
 @Entity
 @Getter
@@ -71,7 +73,7 @@ public class Curriculum extends AbstractEntity {
     }
 
     public void removeSection(int sectionIndex) {
-        Assert.state(this.sections.size() > 1, "마지막 남은 섹션은 삭제할 수 없습니다");
+        state(this.sections.size() > 1, "마지막 남은 섹션은 삭제할 수 없습니다");
 
         Section removed = this.sections.remove(sectionIndex);
 
@@ -101,5 +103,32 @@ public class Curriculum extends AbstractEntity {
                 throw new InvalidCurriculumException("레슨이 없는 섹션은 허용되지 않습니다");
             }
         });
+    }
+
+    public Optional<Lesson> firstLesson() {
+        return this.allLessons().stream().findFirst();
+    }
+
+    public Optional<Lesson> nextLesson(Lesson lesson) {
+        List<Lesson> lessons = this.allLessons();
+
+        int index = lessons.indexOf(lesson);
+
+        state(index >= 0, "커리큘럼에 포함된 수업이 아닙니다");
+
+        if (index + 1 >= lessons.size()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(lessons.get(index + 1));
+    }
+
+    public Optional<Lesson> nextLesson(Long lessonId) {
+        Lesson lesson = this.allLessons().stream()
+                .filter(candidate -> lessonId.equals(candidate.getId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("레슨을 찾을 수 없습니다. ID: " + lessonId));
+
+        return nextLesson(lesson);
     }
 }

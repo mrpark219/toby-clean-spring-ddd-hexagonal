@@ -2,6 +2,7 @@ package mr.park.tobycleanspringdddhexagonal.domain.curriculum;
 
 import mr.park.tobycleanspringdddhexagonal.domain.course.CourseFixture;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static mr.park.tobycleanspringdddhexagonal.domain.curriculum.LessonContent.lesson;
 import static mr.park.tobycleanspringdddhexagonal.domain.curriculum.SectionContent.section;
@@ -244,5 +245,67 @@ class CurriculumTest {
         curriculum.removeLesson(1, 0);
         assertThatThrownBy(() -> curriculum.validate())
                 .isInstanceOf(InvalidCurriculumException.class);
+    }
+
+    @Test
+    void firstLesson() {
+        Curriculum curriculum = CurriculumFixture.createCurriculum();
+        Section s0 = curriculum.addSection("S0");
+        Section s1 = curriculum.addSection("S1");
+
+        assertThat(curriculum.firstLesson()).isEmpty();
+
+        Lesson l0 = curriculum.addLesson(0, "L0");
+        Lesson l1 = curriculum.addLesson(0, "L1");
+        Lesson l2 = curriculum.addLesson(0, "L2");
+        Lesson l3 = curriculum.addLesson(1, "L3");
+        Lesson l4 = curriculum.addLesson(1, "L4");
+
+        assertThat(curriculum.firstLesson().orElseThrow()).isEqualTo(l0);
+    }
+
+    @Test
+    void nextLesson() {
+        Curriculum curriculum = CurriculumFixture.createCurriculum();
+        Section s0 = curriculum.addSection("S0");
+        Section s1 = curriculum.addSection("S1");
+        Lesson l0 = curriculum.addLesson(0, "L0");
+        Lesson l1 = curriculum.addLesson(0, "L1");
+        Lesson l2 = curriculum.addLesson(0, "L2");
+
+        Lesson lesson = curriculum.firstLesson().orElseThrow();
+
+        lesson = curriculum.nextLesson(lesson).orElseThrow();
+        assertThat(lesson).isEqualTo(l1);
+
+        lesson = curriculum.nextLesson(lesson).orElseThrow();
+        assertThat(lesson).isEqualTo(l2);
+
+        assertThat(curriculum.nextLesson(lesson)).isEmpty();
+    }
+
+    @Test
+    void nextLessonWithId() {
+        Curriculum curriculum = CurriculumFixture.createCurriculum();
+        Section s0 = curriculum.addSection("S0");
+        Section s1 = curriculum.addSection("S1");
+        Lesson l0 = curriculum.addLesson(0, "L0");
+        assignId(l0, 10L);
+        Lesson l1 = curriculum.addLesson(0, "L1");
+        assignId(l1, 11L);
+        Lesson l2 = curriculum.addLesson(0, "L2");
+        assignId(l2, 12L);
+
+        Lesson lesson = curriculum.nextLesson(10L).orElseThrow();
+        assertThat(lesson).isEqualTo(l1);
+
+        lesson = curriculum.nextLesson(lesson.getId()).orElseThrow();
+        assertThat(lesson).isEqualTo(l2);
+
+        assertThat(curriculum.nextLesson(lesson.getId())).isEmpty();
+    }
+
+    private void assignId(Lesson lesson, long id) {
+        ReflectionTestUtils.setField(lesson, "id", id);
     }
 }
