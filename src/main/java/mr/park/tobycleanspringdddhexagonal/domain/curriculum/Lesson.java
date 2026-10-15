@@ -14,7 +14,7 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"section"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Lesson extends AbstractEntity {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

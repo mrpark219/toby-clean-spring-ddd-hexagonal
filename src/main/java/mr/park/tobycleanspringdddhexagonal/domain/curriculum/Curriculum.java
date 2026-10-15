@@ -8,23 +8,26 @@ import lombok.ToString;
 import mr.park.tobycleanspringdddhexagonal.domain.AbstractEntity;
 import mr.park.tobycleanspringdddhexagonal.domain.course.Course;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
+import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.state;
 
 @Entity
 @Getter
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"sections"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Curriculum extends AbstractEntity {
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private Course course;
 
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Getter(AccessLevel.NONE)
     private List<Section> sections = new ArrayList<>();
+
+    public List<Section> getSections() {
+        return Collections.unmodifiableList(sections);
+    }
 
     public Curriculum(Course course) {
         this.course = Objects.requireNonNull(course);
@@ -114,7 +117,7 @@ public class Curriculum extends AbstractEntity {
 
         int index = lessons.indexOf(lesson);
 
-        state(index >= 0, "커리큘럼에 포함된 수업이 아닙니다");
+        isTrue(index >= 0, "커리큘럼에 포함된 수업이 아닙니다");
 
         if (index + 1 >= lessons.size()) {
             return Optional.empty();

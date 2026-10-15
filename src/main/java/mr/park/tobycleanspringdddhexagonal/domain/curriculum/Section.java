@@ -8,12 +8,13 @@ import lombok.ToString;
 import mr.park.tobycleanspringdddhexagonal.domain.AbstractEntity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Getter
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"curriculum", "lessons"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Section extends AbstractEntity {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -23,7 +24,12 @@ public class Section extends AbstractEntity {
     private String title;
 
     @OneToMany(mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Getter(AccessLevel.NONE)
     private List<Lesson> lessons = new ArrayList<>();
+
+    public List<Lesson> getLessons() {
+        return Collections.unmodifiableList(lessons);
+    }
 
     Section(Curriculum curriculum, String title) {
         this.curriculum = curriculum;

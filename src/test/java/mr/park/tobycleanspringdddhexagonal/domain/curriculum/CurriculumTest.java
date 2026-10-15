@@ -305,6 +305,20 @@ class CurriculumTest {
         assertThat(curriculum.nextLesson(lesson.getId())).isEmpty();
     }
 
+    @Test
+    void unmodifiableSessionsAndLessons() {
+        Curriculum curriculum = CurriculumFixture.createCurriculum();
+        Section s0 = curriculum.addSection("S0");
+        Lesson l0 = curriculum.addLesson(0, "L0");
+
+        assertThatThrownBy(() -> curriculum.getSections().add(new Section(curriculum, "Fail")))
+                .isInstanceOf(UnsupportedOperationException.class);
+
+        Section section = curriculum.getSections().getFirst();
+        assertThatThrownBy(() -> section.getLessons().add(new Lesson(section, "Fail")))
+                .isInstanceOf(UnsupportedOperationException.class);
+    }
+
     private void assignId(Lesson lesson, long id) {
         ReflectionTestUtils.setField(lesson, "id", id);
     }
