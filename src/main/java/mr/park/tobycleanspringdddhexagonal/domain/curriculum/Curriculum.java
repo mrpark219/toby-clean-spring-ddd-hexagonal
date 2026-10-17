@@ -15,13 +15,14 @@ import static org.springframework.util.Assert.state;
 
 @Entity
 @Getter
-@ToString(callSuper = true, exclude = {"sections"})
+@ToString(callSuper = true, exclude = {"course", "sections"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Curriculum extends AbstractEntity {
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private Course course;
 
-    @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL)
+    @OrderColumn(name = "section_order")
     @Getter(AccessLevel.NONE)
     private List<Section> sections = new ArrayList<>();
 
@@ -65,8 +66,8 @@ public class Curriculum extends AbstractEntity {
         this.sections.get(sectionIndex).updateLessonTitle(lessonIndex, title);
     }
 
-    public void removeLesson(int sectionIndex, int lessonIndex) {
-        this.sections.get(sectionIndex).removeLesson(lessonIndex);
+    public Lesson removeLesson(int sectionIndex, int lessonIndex) {
+        return this.sections.get(sectionIndex).removeLesson(lessonIndex);
     }
 
     public List<Lesson> allLessons() {
@@ -75,7 +76,7 @@ public class Curriculum extends AbstractEntity {
                 .toList();
     }
 
-    public void removeSection(int sectionIndex) {
+    public Section removeSection(int sectionIndex) {
         state(this.sections.size() > 1, "마지막 남은 섹션은 삭제할 수 없습니다");
 
         Section removed = this.sections.remove(sectionIndex);
@@ -87,6 +88,8 @@ public class Curriculum extends AbstractEntity {
             Section previous = this.sections.get(sectionIndex - 1);
             removed.moveAllLessonsTo(previous, previous.getLessons().size());
         }
+
+        return removed;
     }
 
     public void moveLesson(int fromSectionIndex, int fromLessonIndex, int toSectionIndex, int toLessonIndex) {

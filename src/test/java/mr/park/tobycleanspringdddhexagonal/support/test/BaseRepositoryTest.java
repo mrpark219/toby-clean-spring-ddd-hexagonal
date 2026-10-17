@@ -13,6 +13,8 @@ import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
 import mr.park.tobycleanspringdddhexagonal.domain.instructor.InstructorFixture;
 import mr.park.tobycleanspringdddhexagonal.domain.member.Member;
 import mr.park.tobycleanspringdddhexagonal.domain.member.MemberFixture;
+import org.hibernate.SessionFactory;
+import org.hibernate.stat.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.lang.Nullable;
@@ -92,5 +94,12 @@ public class BaseRepositoryTest {
     protected Enrollment prepareEnrollment(Member member, Course course) {
         this.enrollment = enrollmentRepository.save(EnrollmentFixture.createEnrollment(member, course));
         return this.enrollment;
+    }
+
+    protected Statistics prepareStatistics() {
+        Statistics statistics = entityManager.getEntityManagerFactory().unwrap(SessionFactory.class).getStatistics();
+        statistics.setStatisticsEnabled(true);
+        statistics.clear();
+        return statistics;
     }
 }
