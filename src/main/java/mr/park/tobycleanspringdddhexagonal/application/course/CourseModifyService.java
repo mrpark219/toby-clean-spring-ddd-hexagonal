@@ -3,6 +3,7 @@ package mr.park.tobycleanspringdddhexagonal.application.course;
 import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.application.course.provided.*;
 import mr.park.tobycleanspringdddhexagonal.application.course.required.CourseRepository;
+import mr.park.tobycleanspringdddhexagonal.application.course.required.CurriculumCreator;
 import mr.park.tobycleanspringdddhexagonal.application.instructor.provided.InstructorFinder;
 import mr.park.tobycleanspringdddhexagonal.domain.course.Course;
 import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
@@ -16,6 +17,7 @@ public class CourseModifyService implements CourseCreator, CoursePublisher {
     private final CourseFinder courseFinder;
     private final CourseValidator courseValidator;
     private final InstructorFinder instructorFinder;
+    private final CurriculumCreator curriculumCreator;
 
     @Override
     public Course create(CourseCreateRequest createRequest) throws ValidationException {
@@ -25,7 +27,11 @@ public class CourseModifyService implements CourseCreator, CoursePublisher {
 
         Course course = new Course(instructor, createRequest.title(), createRequest.description());
 
-        return courseRepository.save(course);
+        course = courseRepository.save(course);
+
+        curriculumCreator.createCurriculum(course);
+
+        return course;
     }
 
     @Override

@@ -15,11 +15,4 @@ class CurriculumCoordinatorTest extends BaseApplicationServiceTest {
     final CurriculumCoordinator coordinator;
     @Autowired
     private CurriculumCoordinator curriculumCoordinator;
-
-    @Test
-    void create() {
-        Curriculum curriculum = curriculumCoordinator.create(prepareCourse().getId());
-
-        assertThat(curriculum.getId()).isNotNull();
-    }
 }

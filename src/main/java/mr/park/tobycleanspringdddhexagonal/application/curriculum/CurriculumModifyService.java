@@ -1,7 +1,6 @@
 package mr.park.tobycleanspringdddhexagonal.application.curriculum;
 
 import lombok.RequiredArgsConstructor;
-import mr.park.tobycleanspringdddhexagonal.application.course.provided.CourseFinder;
 import mr.park.tobycleanspringdddhexagonal.application.curriculum.provided.CurriculumCoordinator;
 import mr.park.tobycleanspringdddhexagonal.application.curriculum.provided.CurriculumFinder;
 import mr.park.tobycleanspringdddhexagonal.application.curriculum.required.CurriculumRepository;
@@ -10,22 +9,18 @@ import mr.park.tobycleanspringdddhexagonal.domain.curriculum.Curriculum;
 import mr.park.tobycleanspringdddhexagonal.domain.curriculum.InvalidCurriculumException;
 import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationService;
 
-import java.util.Objects;
-
 @ApplicationService
 @RequiredArgsConstructor
 public class CurriculumModifyService implements CurriculumCoordinator {
     private final CurriculumFinder curriculumFinder;
     private final CurriculumRepository curriculumRepository;
-    private final CourseFinder courseFinder;
+
 
     @Override
-    public Curriculum create(Long courseId) {
-        Course course = courseFinder.find(Objects.requireNonNull(courseId));
-
+    public Long createCurriculum(Course course) {
         Curriculum curriculum = new Curriculum(course);
 
-        return curriculumRepository.save(curriculum);
+        return curriculumRepository.save(curriculum).getId();
     }
 
     @Override
