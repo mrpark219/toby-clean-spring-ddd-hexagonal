@@ -4,16 +4,22 @@ import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.application.curriculum.provided.CurriculumCoordinator;
 import mr.park.tobycleanspringdddhexagonal.application.curriculum.provided.CurriculumFinder;
 import mr.park.tobycleanspringdddhexagonal.application.curriculum.required.CurriculumRepository;
+import mr.park.tobycleanspringdddhexagonal.application.curriculum.required.LessonRepository;
+import mr.park.tobycleanspringdddhexagonal.application.curriculum.required.SectionRepository;
 import mr.park.tobycleanspringdddhexagonal.domain.course.Course;
 import mr.park.tobycleanspringdddhexagonal.domain.curriculum.Curriculum;
 import mr.park.tobycleanspringdddhexagonal.domain.curriculum.InvalidCurriculumException;
+import mr.park.tobycleanspringdddhexagonal.domain.curriculum.Lesson;
+import mr.park.tobycleanspringdddhexagonal.domain.curriculum.Section;
 import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationService;
 
 @ApplicationService
 @RequiredArgsConstructor
 public class CurriculumModifyService implements CurriculumCoordinator {
-    private final CurriculumFinder curriculumFinder;
     private final CurriculumRepository curriculumRepository;
+    private final SectionRepository sectionRepository;
+    private final LessonRepository lessonRepository;
+    private final CurriculumFinder curriculumFinder;
 
 
     @Override
@@ -72,7 +78,8 @@ public class CurriculumModifyService implements CurriculumCoordinator {
     public Curriculum removeLesson(Long curriculumId, int sectionIndex, int lessonIndex) {
         Curriculum curriculum = curriculumFinder.find(curriculumId);
 
-        curriculum.removeLesson(sectionIndex, lessonIndex);
+        Lesson lesson = curriculum.removeLesson(sectionIndex, lessonIndex);
+        lessonRepository.delete(lesson);
 
         return curriculumRepository.save(curriculum);
     }
@@ -81,7 +88,8 @@ public class CurriculumModifyService implements CurriculumCoordinator {
     public Curriculum removeSection(Long curriculumId, int sectionIndex) {
         Curriculum curriculum = curriculumFinder.find(curriculumId);
 
-        curriculum.removeSection(sectionIndex);
+        Section section = curriculum.removeSection(sectionIndex);
+        sectionRepository.delete(section);
 
         return curriculumRepository.save(curriculum);
     }
@@ -96,11 +104,9 @@ public class CurriculumModifyService implements CurriculumCoordinator {
     }
 
     @Override
-    public Curriculum validate(Long curriculumId) throws InvalidCurriculumException {
-        Curriculum curriculum = curriculumFinder.find(curriculumId);
+    public void validate(Long courseId) throws InvalidCurriculumException {
+        Curriculum curriculum = curriculumFinder.findByCourse(courseId);
 
         curriculum.validate();
-
-        return curriculum;
     }
 }

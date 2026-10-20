@@ -1,10 +1,10 @@
 package mr.park.tobycleanspringdddhexagonal.application.curriculum.provided;
 
 import mr.park.tobycleanspringdddhexagonal.application.course.required.CurriculumCreator;
+import mr.park.tobycleanspringdddhexagonal.application.course.required.CurriculumValidator;
 import mr.park.tobycleanspringdddhexagonal.domain.curriculum.Curriculum;
-import mr.park.tobycleanspringdddhexagonal.domain.curriculum.InvalidCurriculumException;
 
-public interface CurriculumCoordinator extends CurriculumCreator {
+public interface CurriculumCoordinator extends CurriculumCreator, CurriculumValidator {
     Curriculum addSection(Long curriculumId, String title);
 
     Curriculum addSection(Long curriculumId, int sectionIndex, String title);
@@ -20,6 +20,4 @@ public interface CurriculumCoordinator extends CurriculumCreator {
     Curriculum removeSection(Long curriculumId, int sectionIndex);
 
     Curriculum moveLesson(Long curriculumId, int fromSectionIndex, int fromLessonIndex, int toSectionIndex, int toLessonIndex);
-
-    Curriculum validate(Long curriculumId) throws InvalidCurriculumException;
 }

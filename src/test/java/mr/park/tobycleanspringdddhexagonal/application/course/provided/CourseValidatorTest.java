@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import mr.park.tobycleanspringdddhexagonal.application.course.required.CourseRepository;
 import mr.park.tobycleanspringdddhexagonal.domain.course.Course;
 import mr.park.tobycleanspringdddhexagonal.domain.course.CourseFixture;
+import mr.park.tobycleanspringdddhexagonal.domain.course.CourseStatus;
+import mr.park.tobycleanspringdddhexagonal.domain.curriculum.Curriculum;
 import mr.park.tobycleanspringdddhexagonal.support.exception.ValidationException;
 import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationServiceTest;
 import mr.park.tobycleanspringdddhexagonal.support.test.BaseApplicationServiceTest;
@@ -17,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class CourseValidatorTest extends BaseApplicationServiceTest {
     final CourseValidator courseValidator;
     final CourseRepository courseRepository;
+    final CoursePublisher coursePublisher;
 
     @Test
     void titleDuplication() {
@@ -59,11 +62,32 @@ class CourseValidatorTest extends BaseApplicationServiceTest {
         ).isInstanceOfSatisfying(ValidationException.class, e -> {
             assertThat(e.getErrors()).hasSize(1);
         });
-
+링
         // instructor2 title 변경 없이 update - OK
         courseValidator.validateForUpdate(course2, CourseFixture.createCourseInfoUpdateRequest(course2.getTitle()));
 
         // instructor2 다른 강사의 강의 제목으로 변경 - OK
         courseValidator.validateForUpdate(course2, CourseFixture.createCourseInfoUpdateRequest(course1_2.getTitle()));
+    }
+
+    @Test
+    void submitForReviewFailInvalidCurriculum() {
+        Course course = prepareCourse();
+        Curriculum curriculum = prepareCurriculumSectionsAndLessons(course);
+        curriculum.removeLesson(2, 0);
+
+        assertThatThrownBy(() -> coursePublisher.submitForReview(course.getId()))
+                .isInstanceOf(ValidationException.class);
+    }
+
+    @Test
+    void publishFailInvalidCurriculum() {
+        Course course = prepareCourse();
+        Curriculum curriculum = prepareCurriculumSectionsAndLessons(course);
+        coursePublisher.submitForReview(course.getId());
+        curriculum.removeLesson(2, 0);
+
+        assertThatThrownBy(() -> coursePublisher.publish(course.getId()))
+                .isInstanceOf(ValidationException.class);
     }
 }

@@ -109,6 +109,18 @@
         </attributes>
     </entity>
 
+    <entity class="mr.park.tobycleanspringdddhexagonal.domain.curriculum.Curriculum">
+        <attributes>
+            <one-to-many name="sections" mapped-by="curriculum">
+                <order-column name="section_order"/>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+            <one-to-one name="course" fetch="LAZY" optional="false"/>
+        </attributes>
+    </entity>
+
     <embeddable class="mr.park.tobycleanspringdddhexagonal.domain.member.Profile">
         <attributes>
             <basic name="address">

@@ -5,7 +5,9 @@ import mr.park.tobycleanspringdddhexagonal.application.course.provided.CourseCre
 import mr.park.tobycleanspringdddhexagonal.application.course.provided.CourseInfoUpdateRequest;
 import mr.park.tobycleanspringdddhexagonal.application.course.provided.CourseValidator;
 import mr.park.tobycleanspringdddhexagonal.application.course.required.CourseRepository;
+import mr.park.tobycleanspringdddhexagonal.application.course.required.CurriculumValidator;
 import mr.park.tobycleanspringdddhexagonal.domain.course.Course;
+import mr.park.tobycleanspringdddhexagonal.domain.curriculum.InvalidCurriculumException;
 import mr.park.tobycleanspringdddhexagonal.domain.instructor.Instructor;
 import mr.park.tobycleanspringdddhexagonal.support.exception.ValidationException;
 import mr.park.tobycleanspringdddhexagonal.support.stereotype.ApplicationService;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CourseValidationService implements CourseValidator {
     private final CourseRepository courseRepository;
+    private final CurriculumValidator curriculumValidator;
 
     @Override
     public void validateForCreate(Instructor instructor, CourseCreateRequest createRequest) throws ValidationException {
@@ -48,12 +51,32 @@ public class CourseValidationService implements CourseValidator {
 
     @Override
     public void validateForReview(Course course) throws ValidationException {
-        // TODO
+        List<String> errors = new ArrayList<>();
+
+        checkCurriculum(course, errors);
+
+        if (!errors.isEmpty()) {
+            throw new ValidationException(errors);
+        }
+    }
+
+    private void checkCurriculum(Course course, List<String> errors) {
+        try {
+            curriculumValidator.validate(course.getId());
+        } catch (InvalidCurriculumException e) {
+            errors.add(e.getMessage());
+        }
     }
 
     @Override
     public void validateForPublish(Course course) throws ValidationException {
-        // TODO
+        List<String> errors = new ArrayList<>();
+
+        checkCurriculum(course, errors);
+
+        if (!errors.isEmpty()) {
+            throw new ValidationException(errors);
+        }
     }
 
     @Override
